@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+backend/.env
+
+# Node / Vite
+node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env
+
+# Misc
+.DS_Store
+*.log
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+.next/
+frontend/tsconfig.tsbuildinfo

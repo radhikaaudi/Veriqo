@@ -1,0 +1,10 @@
+rules_version = '2';
+// Veriqo writes/reads Firestore only from the backend via the Admin SDK (service
+// account), which bypasses these rules. Direct client access is denied by default.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

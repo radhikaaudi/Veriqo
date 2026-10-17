@@ -1,0 +1,42 @@
+{
+  "as_of": "2026-10-16",
+  "note": "Labelled test set for Veriqo's DETERMINISTIC decision layer (cross-check + scoring). Each case fixes the Gemini condition output and the RC record, then asserts the cross-checks, the risk band, and which evidence sources must appear. This does NOT evaluate Gemini's visual accuracy — that requires a labelled photo set run with GEMINI_MODE=live (see eval.py output).",
+  "cases": [
+    {
+      "name": "clean-car-current-papers",
+      "condition": {"overall_summary": "clean", "damage": [], "rust_level": "none", "tyre_wear": "minor", "overall_confidence": 0.8},
+      "rc": {"reg_number": "KA01AA0001", "insurance_valid_until": "2027-05-01", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "low", "sources_present": ["not_checked"]}
+    },
+    {
+      "name": "expired-insurance-only",
+      "condition": {"overall_summary": "ok", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.8},
+      "rc": {"reg_number": "KA01AA0002", "insurance_valid_until": "2025-01-01", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": true, "under_loan": false, "blacklisted": false, "band": "low", "sources_present": ["inferred"]}
+    },
+    {
+      "name": "active-loan-and-expired-insurance",
+      "condition": {"overall_summary": "ok", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.8},
+      "rc": {"reg_number": "KA01AA0003", "insurance_valid_until": "2024-11-30", "financier": "HDFC Bank Ltd", "challans": 3, "blacklisted": false},
+      "expect": {"insurance_expired": true, "under_loan": true, "blacklisted": false, "band": "medium", "sources_present": ["record", "inferred"]}
+    },
+    {
+      "name": "blacklisted-vehicle-must-be-high",
+      "condition": {"overall_summary": "ok", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.9},
+      "rc": {"reg_number": "KA01AA0004", "insurance_valid_until": "2027-01-01", "financier": "", "challans": 0, "blacklisted": true},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": true, "band": "high", "sources_present": ["record"]}
+    },
+    {
+      "name": "severe-visible-damage-pushes-condition-risk",
+      "condition": {"overall_summary": "beaten up", "damage": [{"location": "front-left", "type": "crack", "severity": "severe"}, {"location": "door", "type": "dent", "severity": "severe"}, {"location": "roof", "type": "paint_mismatch", "severity": "moderate"}], "rust_level": "moderate", "tyre_wear": "severe", "overall_confidence": 0.7},
+      "rc": {"reg_number": "KA01AA0005", "insurance_valid_until": "2027-01-01", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "high", "sources_present": ["observed"]}
+    },
+    {
+      "name": "low-photo-confidence-adds-uncertainty",
+      "condition": {"overall_summary": "blurry", "damage": [{"location": "bumper", "type": "scratch", "severity": "minor"}], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.3},
+      "rc": {"reg_number": "KA01AA0006", "insurance_valid_until": "2027-01-01", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "low", "sources_present": ["observed", "not_checked"], "uncertainty_gt": 0}
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+:root {
+  --bg: #0f1216;
+  --card: #171b22;
+  --line: #2a3240;
+  --text: #e8edf3;
+  --muted: #9aa7b6;
+  --accent: #3b82f6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+header h1 { font-size: 40px; margin: 0; letter-spacing: -1px; }
+.tag { color: var(--muted); margin-top: 4px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+}
+label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+input[type="text"], input:not([type]) {
+  width: 100%; padding: 11px 12px; border-radius: 9px;
+  border: 1px solid var(--line); background: #0d1014; color: var(--text); font-size: 15px;
+}
+input[type="file"] { color: var(--muted); font-size: 14px; }
+button {
+  margin-top: 18px; width: 100%; padding: 12px; border: 0; border-radius: 9px;
+  background: var(--accent); color: white; font-size: 16px; font-weight: 600; cursor: pointer;
+}
+button:disabled { opacity: 0.6; cursor: default; }
+small { color: var(--muted); }
+.error { color: #ff6b6b; margin-top: 10px; }
+
+.report section { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+.report h3 { margin: 0 0 10px; font-size: 16px; }
+.riskhead { display: flex; gap: 20px; align-items: center; border-left: 5px solid; padding: 6px 0 6px 16px; }
+.score { font-size: 46px; font-weight: 800; line-height: 1; }
+.scorelabel { color: var(--muted); font-size: 12px; }
+.band { font-weight: 800; letter-spacing: 1px; }
+.summary { margin: 4px 0; }
+.meta { color: var(--muted); font-size: 12px; }
+
+ul { margin: 0; padding-left: 20px; }
+li { margin: 4px 0; }
+.notes { color: var(--muted); font-size: 14px; margin-top: 10px; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.field { background: #0d1014; border: 1px solid var(--line); border-radius: 9px; padding: 10px; }
+.field.bad { border-color: #b42318; }
+.field .k { color: var(--muted); font-size: 12px; }
+.field .v { font-weight: 600; margin-top: 2px; }
+
+.chips { display: flex; gap: 16px; margin-bottom: 12px; }
+.sev { color: white; border-radius: 6px; padding: 1px 8px; font-size: 12px; text-transform: capitalize; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }
+
+.share { color: var(--muted); font-size: 13px; margin-top: 16px; }
+code { background: #0d1014; padding: 2px 6px; border-radius: 5px; font-size: 0.92em; }
+footer { color: var(--muted); font-size: 13px; margin-top: 24px; }
+
+/* ---- Honesty banner: mock data must never read as government-verified ---- */
+.banner { border-radius: 10px; padding: 12px 14px; font-size: 13.5px; line-height: 1.5; margin-bottom: 16px; }
+.banner.mock { background: #2a1d05; border: 1px solid #a9750d; color: #ffd98a; }
+.banner.live { background: #0d2416; border: 1px solid #1a7f37; color: #9be2ad; }
+.banner code { background: rgba(0,0,0,0.3); }
+
+/* ---- Score breakdown bar ---- */
+.breakdown { margin-top: 10px; }
+.bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: #0d1014; border: 1px solid var(--line); }
+.seg { height: 100%; }
+.bar-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 7px; font-size: 12px; color: var(--muted); align-items: center; }
+.bar-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+.meta-inline { margin-left: auto; }
+
+/* ---- Provenance legend + badges ---- */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.prov { color: white; border-radius: 6px; padding: 2px 8px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+
+/* ---- Finding cards ---- */
+.finding-group { margin-top: 14px; }
+.finding-group h4 { margin: 0 0 8px; font-size: 14px; }
+.finding-group .count { color: var(--muted); font-weight: 400; }
+.finding {
+  background: #0d1014; border: 1px solid var(--line); border-left: 4px solid;
+  border-radius: 9px; padding: 10px 12px; margin-bottom: 8px;
+}
+.finding-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.finding-title { font-weight: 600; }
+.finding-head .spacer { flex: 1; }
+.points { background: #b42318; color: white; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 700; }
+.finding-detail { color: var(--text); font-size: 13.5px; margin-top: 5px; }
+.finding-evidence { color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+.finding-action { color: #7fb8ff; font-size: 13px; margin-top: 6px; }
+
+/* ---- Disclosure sections (methodology, audit) ---- */
+.disclose { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 16px; }
+.disclose summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text); }
+.disclose summary::marker { color: var(--muted); }
+.muted-p { color: var(--muted); font-size: 13px; }
+.rules { color: var(--muted); font-size: 13px; }
+.audit { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px; }
+.audit td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.audit .muted { color: var(--muted); }
+
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .riskhead { flex-direction: column; align-items: flex-start; } }
