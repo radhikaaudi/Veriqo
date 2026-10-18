@@ -3,6 +3,12 @@
 **Verify any used car in 60 seconds — before you pay anyone.**
 AI Builder Cup 2026 · Theme: Retail & Commerce · Built on **Firebase · Firestore · Cloud Run · Gemini**.
 
+### 🎥 Demo videos
+- **English version:** https://youtu.be/B015EyHjXNM
+- **Original version:** https://youtu.be/zZbVIwDWArE
+
+**Live app:** https://veriqo-api-920194228751.us-central1.run.app
+
 Upload photos of a used car + its registration number → Veriqo returns an evidence-backed
 report combining **Gemini visual condition analysis** with an **authoritative VAHAN RC check**,
 a deterministic **risk score**, red flags, and a "get these professionally inspected" list.
