@@ -20,6 +20,7 @@ OUT = ROOT / "docs/Veriqo_AI_Builder_Cup_Deck.pptx"
 
 LIVE_URL = "https://veriqo-api-920194228751.us-central1.run.app"
 REPO_URL = "https://github.com/radhikaaudi/Veriqo"
+VIDEO_URL = "https://youtu.be/B015EyHjXNM"
 
 FONT = "Arial"
 BLACK, WHITE = RGBColor(0, 0, 0), RGBColor(0xFF, 0xFF, 0xFF)
@@ -343,11 +344,12 @@ bullets(s, [
 s = content("Provide links to your")
 yy = Inches(2.1)
 for lbl, val in [("GitHub Public Repository", REPO_URL),
-                 ("Demo Video Link (3 Minutes)", "[ paste the video link after upload ]"),
+                 ("Demo Video Link (3 Minutes)", VIDEO_URL),
                  ("Final Product Link", LIVE_URL)]:
     txt(s, "●  " + lbl, Inches(0.8), yy, Inches(4.9), Inches(0.5), size=17, bold=True)
     rect(s, Inches(5.7), yy - Inches(0.05), Inches(7.05), Inches(0.55), fill=PANEL, line=LINE, shape=MSO_SHAPE.ROUNDED_RECTANGLE)
-    txt(s, val, Inches(5.9), yy + Inches(0.07), Inches(6.7), Inches(0.4), size=13, color=MUTED if val.startswith("[") else INK)
+    link = txt(s, val, Inches(5.9), yy + Inches(0.07), Inches(6.7), Inches(0.4), size=13, color=BLUE)
+    link.text_frame.paragraphs[0].runs[0].hyperlink.address = val   # clickable in PowerPoint and the PDF
     yy += Inches(1.0)
 note(s, "The live app is kept warm (1 always-on Cloud Run instance) for the evaluation period.", Inches(5.4), fill=PANEL, border=LINE)
 
