@@ -1,0 +1,7 @@
+{
+  "name": "veriqo-e2e",
+  "private": true,
+  "description": "Browser end-to-end test matrix for the deployed Veriqo app (uses the system Chrome via playwright-core).",
+  "scripts": { "matrix": "node matrix.js" },
+  "devDependencies": { "playwright-core": "1.48.2" }
+}

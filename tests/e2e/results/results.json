@@ -1,0 +1,1018 @@
+{
+  "base_url": "https://veriqo-api-920194228751.us-central1.run.app",
+  "ran_at": "2026-10-18T15:23:01.230Z",
+  "results": [
+    {
+      "id": "A-B",
+      "purpose": "Successful upload, 3 photos of one car, listing matches record",
+      "inputs": "01-clean-front.jpg, 02-clean-side.jpg, 03-clean-rear.jpg · reg ZZ01TC0001 · listing \"Volkswagen Vento\"",
+      "expected": "Report with all four provenance groups available; checklist present; record banner says SIMULATED; low score is NOT an all-clear (history + mechanical listed as Not checked); listing matches record.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "3 photos uploaded and labelled 1–3",
+          "ok": true
+        },
+        {
+          "name": "photos stored in Cloud Storage (gs://)",
+          "ok": true
+        },
+        {
+          "name": "≥2 vehicle views identified",
+          "ok": true
+        },
+        {
+          "name": "listing make/model matches record",
+          "ok": true
+        },
+        {
+          "name": "SIMULATED — NOT GOVERNMENT VERIFIED banner visible",
+          "ok": true
+        },
+        {
+          "name": "history + mechanical always Not checked",
+          "ok": true
+        },
+        {
+          "name": "prioritised checklist rendered",
+          "ok": true
+        },
+        {
+          "name": "score == sum of finding points (visible capped at 60)",
+          "ok": true
+        },
+        {
+          "name": "N: report reloads from Firestore after refresh (same id)",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 15688,
+        "risk": "14 (low)",
+        "confidence": 0.6,
+        "views_covered": [
+          "front",
+          "left_side",
+          "rear",
+          "right_side"
+        ],
+        "damage": [
+          "scratch@front bumper, lower right [minor] photo 1",
+          "scratch@rear bumper, lower left [minor] photo 3"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Cannot be judged from photos.",
+        "summary": "The car appears to be in fair cosmetic condition with some minor scuffs visible on the front and rear bumpers. The body panels generally look straight, but a comprehensive assessment is limited by the provided views.",
+        "observed": [
+          "Scratch on front bumper, lower right",
+          "Scratch on rear bumper, lower left"
+        ],
+        "record": [
+          "Listed make/model matches the registration record"
+        ],
+        "inferred": [],
+        "not_checked": [
+          "Missing photo coverage: tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Undercarriage inspection for rust or damage",
+          "Detailed interior inspection for wear, tears, or functionality",
+          "Check all electrical components and lights",
+          "Tyre tread depth and condition of all four tyres plus spare",
+          "Fluid levels and condition",
+          "Full body inspection for hidden damage, previous repairs, or paint inconsistencies"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "5f05f78378",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/b2fab2fc25c0/0.jpg",
+          "gs://veriqo-512010-uploads/verifications/b2fab2fc25c0/1.jpg",
+          "gs://veriqo-512010-uploads/verifications/b2fab2fc25c0/2.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/A-B.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "C1",
+      "purpose": "Visible scratch",
+      "inputs": "04-visible-scratch.jpg · reg ZZ01TC0001",
+      "expected": "Observed finding of type scratch, linked to Photo 1.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "scratch observed",
+          "ok": true
+        },
+        {
+          "name": "finding cites Photo 1",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 17146,
+        "risk": "26 (medium)",
+        "confidence": 0.65,
+        "views_covered": [
+          "left_side"
+        ],
+        "damage": [
+          "scratch@Left rear door, left front door, left rear quarter panel [moderate] photo 1",
+          "scratch@Left side mirror [minor] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Partially visible, appears generally intact from limited view.",
+        "summary": "The vehicle shows extensive moderate to severe scratches along the entire left side, affecting both doors and the rear quarter panel. The left side mirror also has minor scuffs. The overall visibility is limited due to dark lighting conditions.",
+        "observed": [
+          "Scratch on Left rear door, left front door, left rear quarter panel",
+          "Scratch on Left side mirror"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: front, rear, right side, tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full body inspection for dents, rust, and other damage not visible in photos.",
+          "Paint thickness measurements to check for prior repairs.",
+          "Tyre tread depth on all four tires.",
+          "Full interior condition assessment for wear and tear.",
+          "Undercarriage inspection for rust or damage."
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "8b438b2f03",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/3731cb870d97/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/C1.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "C2",
+      "purpose": "Door dent",
+      "inputs": "05-door-dent.jpg · reg ZZ01TC0001",
+      "expected": "Observed finding of type dent.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "dent observed",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 10968,
+        "risk": "72 (high)",
+        "confidence": 0.9,
+        "views_covered": [
+          "left_side",
+          "front",
+          "close_up"
+        ],
+        "damage": [
+          "dent@left front fender [severe] photo 1",
+          "scratch@left front fender [moderate] photo 1",
+          "dent@left front door [severe] photo 1",
+          "missing_part@left front door window [severe] photo 1",
+          "dent@left side skirt / rocker panel [severe] photo 1",
+          "rust@left front door / fender seam [minor] photo 1"
+        ],
+        "rust_level": "minor",
+        "tyre_wear": "moderate",
+        "interior": "Not visible for assessment",
+        "summary": "The vehicle shows severe impact damage to the left front fender and left front door, including significant crumpling and a missing window, which is temporarily covered with plastic. Multiple deep dents and scratches are present on the affected panels. Professional inspection is highly recommended due to the extent of the visible damage.",
+        "observed": [
+          "Dent on left front fender",
+          "Scratch on left front fender",
+          "Dent on left front door",
+          "Missing part on left front door window",
+          "Dent on left side skirt / rocker panel",
+          "Rust on left front door / fender seam",
+          "Visible rust (minor)",
+          "Uneven / heavy tyre wear (moderate)"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: rear, right side, tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full body and frame inspection for structural integrity",
+          "Suspension and steering components on the left side",
+          "Electrical systems, especially related to the door and window",
+          "Interior for water damage or other issues due to missing window"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "aab9e69610",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/b1efb504d18a/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/C2.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "D",
+      "purpose": "Rust near wheel arch",
+      "inputs": "06-rust-wheel-arch.jpg · reg ZZ01TC0001",
+      "expected": "Rust reported (rust_level above none or a rust damage item).",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "rust observed",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 9095,
+        "risk": "60 (high)",
+        "confidence": 0.9,
+        "views_covered": [
+          "left_side",
+          "tyres",
+          "close_up"
+        ],
+        "damage": [
+          "rust@front left wheel arch [severe] photo 1",
+          "scratch@front left door [minor] photo 1"
+        ],
+        "rust_level": "severe",
+        "tyre_wear": "none",
+        "interior": "Not visible in photos.",
+        "summary": "The vehicle shows severe rust and paint damage on the front left wheel arch, indicating a significant bodywork issue. Minor scratches are also visible on the front left door. The tire tread appears to be in reasonable condition for the visible area.",
+        "observed": [
+          "Rust on front left wheel arch",
+          "Scratch on front left door",
+          "Visible rust (severe)"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: front, rear, right side, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Assessment of structural integrity due to severe rust on wheel arch",
+          "Measurement of tire tread depth on all tires",
+          "Brake system inspection",
+          "Suspension components inspection"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "8c311308d6",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/c95b655a94ba/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/D.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "E",
+      "purpose": "Worn tyre tread",
+      "inputs": "07-worn-tyre.jpg · reg ZZ01TC0001",
+      "expected": "Tyre wear moderate/severe or a worn_tyre item.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "tyre wear observed",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 6761,
+        "risk": "45 (medium)",
+        "confidence": 1,
+        "views_covered": [
+          "tyres",
+          "close_up"
+        ],
+        "damage": [
+          "worn_tyre@tire [severe] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "severe",
+        "interior": "not visible",
+        "summary": "The provided photo shows a single tire that is severely worn, with virtually no tread remaining. This indicates a critical safety concern.",
+        "observed": [
+          "Worn tyre on tire",
+          "Uneven / heavy tyre wear (severe)"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: front, rear, left side, right side, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "All other tires for similar wear and damage",
+          "Brake system condition",
+          "Suspension components",
+          "Steering alignment"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "d6e50ae7d4",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/f6d80e960908/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/E.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "F",
+      "purpose": "Interior damage (torn seat)",
+      "inputs": "08-interior-damage.jpg · reg ZZ01TC0001",
+      "expected": "interior_damage item or interior condition describing the tear.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "interior damage observed",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 8428,
+        "risk": "22 (low)",
+        "confidence": 0.7,
+        "views_covered": [
+          "interior",
+          "close_up"
+        ],
+        "damage": [
+          "interior_damage@driver's seat bolster [moderate] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Worn and dirty, with a significant tear on the driver's seat.",
+        "summary": "The interior of the car shows signs of significant wear and tear. The driver's seat has a noticeable tear with exposed foam, and the carpet appears dirty with debris.",
+        "observed": [
+          "Interior damage on driver's seat bolster"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: front, rear, left side, right side, tyre close-ups",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Overall interior cleanliness and condition of other seats/trim",
+          "Condition of steering wheel, dashboard, and controls",
+          "Condition of other interior components not visible in the photo"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "971a95116f",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/b8f5d024ce46/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/F.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "G",
+      "purpose": "Blurry photo",
+      "inputs": "09-blurry-car.jpg · reg ZZ01TC0001",
+      "expected": "Low confidence (<0.5), 'Low photo confidence' Not-checked finding, no confident damage claims.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "confidence < 0.5",
+          "ok": true
+        },
+        {
+          "name": "low-confidence finding present",
+          "ok": true
+        },
+        {
+          "name": "no moderate/severe damage claimed",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 9251,
+        "risk": "8 (low)",
+        "confidence": 0.1,
+        "views_covered": [],
+        "damage": [],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Not visible in photos",
+        "summary": "The provided photo is extremely blurry, making it impossible to assess the car's condition. No details regarding bodywork, paint, or specific damage can be discerned from this image.",
+        "observed": [],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Low photo confidence",
+          "Make/model not cross-checked",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full exterior inspection for dents, scratches, and paint condition",
+          "Inspection for rust, especially undercarriage and wheel arches",
+          "Tyre tread depth and condition on all four wheels",
+          "Interior condition, including upholstery, trim, and functionality of all controls",
+          "Functionality of all exterior lights"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "6932e9e3c9",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/e5bc3a79d41c/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/G.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "H",
+      "purpose": "Insufficient coverage (single bonnet crop)",
+      "inputs": "10-missing-coverage.jpg · reg ZZ01TC0001",
+      "expected": "Missing photo coverage finding listing the views not shown.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "missing-coverage finding",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 9768,
+        "risk": "24 (low)",
+        "confidence": 0.7,
+        "views_covered": [
+          "front",
+          "close_up"
+        ],
+        "damage": [
+          "other@left headlight [minor] photo 1",
+          "other@right headlight [minor] photo 1",
+          "scratch@front bumper, right side [minor] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "not visible",
+        "summary": "The visible front of the car shows some minor cosmetic issues, including haziness on both headlights and a scuff on the front bumper. The paint appears consistent in the areas shown.",
+        "observed": [
+          "Other on left headlight",
+          "Other on right headlight",
+          "Scratch on front bumper, right side"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: rear, left side, right side, tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full body inspection for dents, scratches, and paint condition",
+          "Undercarriage for rust and damage",
+          "Tyre condition and tread depth",
+          "Brake system inspection",
+          "Interior condition, including upholstery, trim, and electronics",
+          "Fluid levels and leaks",
+          "Headlight performance and clarity"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "09ad6ad01c",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/b62db37831ea/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/H.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "MI",
+      "purpose": "Multiple issues on one car",
+      "inputs": "11-multiple-issues.jpg · reg ZZ01TC0001",
+      "expected": "Two or more separate Observed findings.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "≥2 observed findings",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 9626,
+        "risk": "54 (medium)",
+        "confidence": 0.9,
+        "views_covered": [
+          "front",
+          "close_up"
+        ],
+        "damage": [
+          "paint_mismatch@Front bumper [moderate] photo 1",
+          "crack@Front bumper [moderate] photo 1",
+          "other@Left front indicator light [moderate] photo 1",
+          "paint_mismatch@Hood / Left front fender [minor] photo 1",
+          "rust@Hood / Left front fender [minor] photo 1"
+        ],
+        "rust_level": "minor",
+        "tyre_wear": "none",
+        "interior": "Not visible",
+        "summary": "The front of the vehicle shows significant cosmetic and structural damage. The front bumper has extensive paint peeling, cracking, and a missing section. There is also visible damage to the left front indicator light and surface rust on the hood/fender.",
+        "observed": [
+          "Paint mismatch on Front bumper",
+          "Crack on Front bumper",
+          "Other on Left front indicator light",
+          "Paint mismatch on Hood / Left front fender",
+          "Rust on Hood / Left front fender",
+          "Visible rust (minor)"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: rear, left side, right side, tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Structural integrity of the front end due to bumper damage",
+          "Functionality of all lights",
+          "Underlying rust and corrosion, especially in the damaged bumper area",
+          "Alignment of front panels and potential hidden damage from impact"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "b391f4aae5",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/3ce50e9693d7/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/MI.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "I",
+      "purpose": "Registration record unavailable",
+      "inputs": "01-clean-front.jpg · reg ZZ99NOREC0",
+      "expected": "Record NOT VERIFIED banner + empty state; insurance/loan/blacklist unknown (null); no Record/Inferred findings invented.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "rc.available is false",
+          "ok": true
+        },
+        {
+          "name": "cross-checks unknown (null), not false",
+          "ok": true
+        },
+        {
+          "name": "no record/inferred findings invented",
+          "ok": true
+        },
+        {
+          "name": "NOT VERIFIED shown in UI",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 10131,
+        "risk": "46 (medium)",
+        "confidence": 0.6,
+        "views_covered": [
+          "front",
+          "left_side"
+        ],
+        "damage": [
+          "other@front left headlight [moderate] photo 1",
+          "other@front right headlight [moderate] photo 1",
+          "scratches@front bumper, lower right side [minor] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Cannot be judged from photos",
+        "summary": "The car appears to be in fair cosmetic condition from the visible angles. There is noticeable hazing on the headlights and a scuff on the front bumper. Many areas of the vehicle are not visible in the provided photos.",
+        "observed": [
+          "Other on front left headlight",
+          "Other on front right headlight",
+          "Scratches on front bumper, lower right side"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Registration record not available — not verified",
+          "Missing photo coverage: rear, right side, tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full body inspection for dents, scratches, and paint condition on all panels, especially the rear and right side which are not visible.",
+          "Detailed inspection of all tyres for tread depth, sidewall condition, and uneven wear.",
+          "Thorough inspection of the interior for wear, tears, stains, and functionality of all components.",
+          "Check for any signs of rust on the undercarriage and body panels.",
+          "Functionality and light output of the headlights."
+        ],
+        "rc_available": false,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "6c5199b84e",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/adf77d8a8b33/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/I.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "J",
+      "purpose": "Listing make/model conflicts with record",
+      "inputs": "01-clean-front.jpg · reg ZZ01TC0004 · listing \"Honda City\"",
+      "expected": "Inferred finding 'Listed make/model does not match' (+25); listing field highlighted.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "make_model_match is false",
+          "ok": true
+        },
+        {
+          "name": "inferred mismatch finding",
+          "ok": true
+        },
+        {
+          "name": "listing field highlighted in record grid",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 15047,
+        "risk": "50 (medium)",
+        "confidence": 0.65,
+        "views_covered": [
+          "front",
+          "left_side",
+          "interior",
+          "close_up"
+        ],
+        "damage": [
+          "scratch@front bumper (lower left) [minor] photo 1",
+          "scratch@front bumper (lower grille trim) [minor] photo 1",
+          "other@headlights [minor] photo 1",
+          "scratch@left front alloy wheel [minor] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Cannot be fully assessed from photos, appears generally tidy from visible parts.",
+        "summary": "The vehicle appears to be in fair cosmetic condition from the visible front and left-front aspects. Minor scuffs are present on the front bumper and left front alloy wheel, and both headlights show some hazing. A full inspection is needed due to limited photographic coverage.",
+        "observed": [
+          "Scratch on front bumper (lower left)",
+          "Scratch on front bumper (lower grille trim)",
+          "Other on headlights",
+          "Scratch on left front alloy wheel"
+        ],
+        "record": [],
+        "inferred": [
+          "Listed make/model does not match the registration record"
+        ],
+        "not_checked": [
+          "Missing photo coverage: rear, right side, tyre close-ups",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full body inspection for dents, scratches, and paint condition on all panels not clearly visible (right side, rear, roof)",
+          "Undercarriage for rust and damage",
+          "Brake system and suspension components",
+          "Tyre tread depth and condition of all four tyres",
+          "Interior condition, including upholstery, dashboard, and electronics",
+          "Functionality of all lights and electrical components"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "b5768bf3c6",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/05967241e411/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/J.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "K",
+      "purpose": "Invalid file type, oversized file, empty submission",
+      "inputs": "notes.txt, 13 MB image, no photos",
+      "expected": "Non-images and >12 MB files skipped with a visible notice; submitting without photos shows a clear error; nothing sent to Gemini.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "UI notice: 2 files skipped",
+          "ok": true
+        },
+        {
+          "name": "empty submission → clear error",
+          "ok": true
+        },
+        {
+          "name": "no request sent to the API",
+          "ok": true
+        },
+        {
+          "name": "API rejects non-image with 415",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "notice": "2 file(s) skipped — only images up to 12 MB are accepted.",
+        "error": "Add at least one photo of the car.",
+        "api_status": 415
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/K.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "M",
+      "purpose": "Backend unavailable / network interrupted",
+      "inputs": "01-clean-front.jpg with /api/verify aborted at the network layer",
+      "expected": "Friendly 'Can't reach the Veriqo server… nothing was submitted' error; app stays usable.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "friendly network error",
+          "ok": true
+        },
+        {
+          "name": "form still usable afterwards",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "error": "Can't reach the Veriqo server. Check your connection and try again — nothing was submitted."
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/M.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "P",
+      "purpose": "Responsive layout at 390 px (mobile)",
+      "inputs": "11-multiple-issues.jpg · reg ZZ01TC0002",
+      "expected": "Report fits the viewport: no horizontal overflow.",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "no horizontal overflow",
+          "ok": true
+        }
+      ],
+      "actual": {
+        "latency_ms": 9325,
+        "risk": "100 (high)",
+        "confidence": 0.9,
+        "views_covered": [
+          "front",
+          "close_up"
+        ],
+        "damage": [
+          "crack@front bumper [severe] photo 1",
+          "other@front bumper, hood, right front fender [moderate] photo 1",
+          "other@right front indicator light [moderate] photo 1",
+          "other@right front headlight [minor] photo 1",
+          "rust@structure behind front bumper [severe] photo 1",
+          "rust@hood [minor] photo 1"
+        ],
+        "rust_level": "severe",
+        "tyre_wear": "none",
+        "interior": "Not visible",
+        "summary": "The front of the vehicle shows extensive damage, including severe cracking and missing pieces on the bumper, significant paint peeling across multiple panels, and visible rust on structural components. The right front indicator light is damaged, and the headlight is hazy.",
+        "observed": [
+          "Crack on front bumper",
+          "Other on front bumper, hood, right front fender",
+          "Other on right front indicator light",
+          "Other on right front headlight",
+          "Rust on structure behind front bumper",
+          "Rust on hood",
+          "Visible rust (severe)"
+        ],
+        "record": [
+          "Active loan / hypothecation",
+          "3 pending challan(s)"
+        ],
+        "inferred": [
+          "Insurance has expired"
+        ],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: rear, left side, right side, tyre close-ups, interior",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full assessment of front impact damage and structural integrity",
+          "Inspection of all lighting components for functionality",
+          "Underbody and chassis rust inspection",
+          "Tyre condition and tread depth",
+          "Interior condition and functionality of all features"
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "9b43ea42b2",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/282dc4a5bd83/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/P.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "Q",
+      "purpose": "Repeat C1 with identical input (consistency)",
+      "inputs": "04-visible-scratch.jpg · reg ZZ01TC0001",
+      "expected": "Same risk band and same damage types as the first run (Gemini is non-deterministic; differences recorded).",
+      "source": "real (deployed app, live Gemini, simulated RC)",
+      "checks": [
+        {
+          "name": "HTTP 200 and report rendered",
+          "ok": true
+        },
+        {
+          "name": "same band and damage types as C1",
+          "ok": true,
+          "detail": "run1 26/medium scratch,scratch · run2 26/medium scratch,scratch"
+        }
+      ],
+      "actual": {
+        "latency_ms": 17156,
+        "risk": "26 (medium)",
+        "confidence": 0.6,
+        "views_covered": [
+          "left_side",
+          "interior",
+          "close_up"
+        ],
+        "damage": [
+          "scratch@left rear door, left front door [moderate] photo 1",
+          "scratch@left side mirror [minor] photo 1"
+        ],
+        "rust_level": "none",
+        "tyre_wear": "none",
+        "interior": "Used, with a seat cover visible on the driver's seat. No severe damage is apparent from this view.",
+        "summary": "The vehicle exhibits extensive deep scratches along the entire left side, affecting both the front and rear doors. The left side mirror also shows visible scuffs. The interior, as seen through the window, appears used.",
+        "observed": [
+          "Scratch on left rear door, left front door",
+          "Scratch on left side mirror"
+        ],
+        "record": [],
+        "inferred": [],
+        "not_checked": [
+          "Make/model not cross-checked",
+          "Missing photo coverage: front, rear, right side, tyre close-ups",
+          "Accident and service history — not checked",
+          "Hidden mechanical condition — not checked",
+          "Full body inspection for dents, rust, and paint condition on all sides not visible in the photo.",
+          "Tyre tread depth and condition on all four wheels.",
+          "Full interior inspection for wear, tears, and functionality.",
+          "Underbody inspection for rust or damage."
+        ],
+        "rc_available": true,
+        "rc_verified": false,
+        "gemini_mode": "live",
+        "vahan_mode": "mock",
+        "share_id": "4c97ea8c07",
+        "photo_uris": [
+          "gs://veriqo-512010-uploads/verifications/2285c191b27e/0.jpg"
+        ]
+      },
+      "notes": "",
+      "evidence": [
+        "demo-assets/screenshots/tests/Q.png"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "L",
+      "purpose": "Gemini failure, timeout, rate limit",
+      "inputs": "monkeypatched Gemini raising 429 / timeout / generic error",
+      "expected": "503 / 504 / 502 with 'Nothing was saved', nothing persisted",
+      "status": "pass (API unit test)",
+      "source": "simulated failure — backend/tests/test_api.py::test_gemini_failures_map_to_clear_errors_and_save_nothing (cannot safely force a real Vertex outage in production)",
+      "checks": [],
+      "actual": {}
+    },
+    {
+      "id": "O",
+      "purpose": "Authentication / authorization boundaries",
+      "inputs": "—",
+      "expected": "—",
+      "status": "not applicable",
+      "source": "Authentication is not implemented in this prototype; reports are reachable by their unguessable share id.",
+      "checks": [],
+      "actual": {}
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "intro",
+    "start": 0,
+    "dur": 11.416871,
+    "say": "Buying a used car means trusting photos and paperwork you can't verify. Veriqo shows a buyer what the photos reveal, what the record says, what is still uncertain, and what to inspect before paying.",
+    "cap": "The problem: buyers pay for cars they can't fully verify."
+  },
+  {
+    "id": "upload",
+    "start": 11.919,
+    "dur": 12.281723,
+    "say": "This is the live app on Google Cloud Run. We enter a test registration number, the make and model from the seller's listing, and five test photos. They are real, openly licensed images, not a customer's car.",
+    "cap": "Live app on Cloud Run · synthetic test plate · 5 openly licensed test photos"
+  },
+  {
+    "id": "analyze",
+    "start": 24.702,
+    "dur": 11.580544,
+    "say": "Gemini 2.5 Flash on Vertex AI reads every photo and returns structured findings, each linked to the photo it came from. Then the registration lookup runs. In this demo it is simulated.",
+    "cap": "Real analysis in progress: Gemini 2.5 Flash on Vertex AI → simulated registration lookup → rules"
+  },
+  {
+    "id": "score",
+    "start": 51.273,
+    "dur": 7.314739,
+    "say": "The score is not a guess. It is the sum of fixed, published rules, and the breakdown shows exactly where every point came from.",
+    "cap": "Score = sum of published rules · breakdown shows where every point came from"
+  },
+  {
+    "id": "labels",
+    "start": 72.683,
+    "dur": 18.073379,
+    "say": "Every finding carries one of four labels. Observed means seen in the photos, like the worn tyre and the torn seat. Record means read from the registration data. Inferred means a rule applied to that data, like the expired insurance. And not checked is what photos can never prove, such as accident history or the engine.",
+    "cap": "Four labels: Observed · Record · Inferred · Not checked"
+  },
+  {
+    "id": "simulated",
+    "start": 91.276,
+    "dur": 7.683991,
+    "say": "This registration record is synthetic test data, so it is labelled simulated, not government verified, wherever it appears.",
+    "cap": "Synthetic record → labelled SIMULATED — NOT GOVERNMENT VERIFIED"
+  },
+  {
+    "id": "checklist",
+    "start": 99.462,
+    "dur": 4.970522,
+    "say": "Finally, a prioritised checklist tells the buyer exactly what to do before paying.",
+    "cap": "Prioritised buyer checklist"
+  },
+  {
+    "id": "persist",
+    "start": 104.933,
+    "dur": 7.303129,
+    "say": "The report is saved in Firestore, with the photos in a private Cloud Storage bucket. Reloading the link brings back the same report.",
+    "cap": "Saved in Firestore · photos in private Cloud Storage · reload restores the report"
+  },
+  {
+    "id": "failure",
+    "start": 112.737,
+    "dur": 12.183356,
+    "say": "Now a failure case: a blurry photo, and a plate with no record. Veriqo lowers its confidence, makes no confident claims, and marks the registration as not verified, instead of inventing data.",
+    "cap": "Failure case: blurry photo + plate with no record"
+  },
+  {
+    "id": "close",
+    "start": 125.424,
+    "dur": 12.871383,
+    "say": "Under the hood: Cloud Run, Gemini on Vertex AI, Firestore and Cloud Storage, with automated API tests and a browser test matrix run against this deployment. Veriqo. Know what to check before you buy.",
+    "cap": "Cloud Run · Gemini 2.5 Flash (Vertex AI) · Firestore · Cloud Storage"
+  }
+]

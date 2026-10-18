@@ -26,9 +26,23 @@ class EvidenceSource(str, Enum):
 
 class DamageItem(BaseModel):
     location: str = Field(description="Panel/part, e.g. 'front bumper', 'left rear door'")
-    type: str = Field(description="dent | scratch | rust | crack | paint_mismatch | missing_part | other")
+    type: str = Field(description="dent | scratch | rust | crack | paint_mismatch | missing_part | worn_tyre | interior_damage | other")
     severity: Severity = Severity.minor
     note: str = Field(default="", description="Short human-readable detail")
+    photo_number: int = Field(default=0, description="1-based number of the uploaded photo that shows this issue; 0 if unclear")
+
+
+class View(str, Enum):
+    """Which part of the car a photo shows — used to detect missing coverage."""
+    front = "front"
+    rear = "rear"
+    left_side = "left_side"
+    right_side = "right_side"
+    tyres = "tyres"
+    interior = "interior"
+    dashboard_odometer = "dashboard_odometer"
+    engine_bay = "engine_bay"
+    close_up = "close_up"
 
 
 class ConditionReport(BaseModel):
@@ -45,10 +59,16 @@ class ConditionReport(BaseModel):
         description="Specific things a mechanic must check (anything not verifiable from photos)",
     )
     overall_confidence: float = Field(default=0.5, description="0..1 confidence in this visual assessment")
+    views_covered: list[View] = Field(
+        default_factory=list,
+        description="Every vehicle view clearly shown across ALL photos (empty only if no view is identifiable)",
+    )
 
 
 class RcRecord(BaseModel):
     reg_number: str
+    available: bool = True            # False => no record found / lookup failed => NOT VERIFIED
+    note: str = ""                    # why a record is unavailable, or a provenance note
     make: str = ""
     model: str = ""
     reg_date: str = ""
@@ -101,6 +121,7 @@ class VerificationResult(BaseModel):
     share_id: str = ""
     created_at: str = ""
     reg_number: str = ""
+    claimed_make_model: str = ""      # what the seller's listing says (buyer-entered), compared to the record
     condition: ConditionReport
     rc: RcRecord
     cross_checks: CrossChecks

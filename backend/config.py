@@ -12,7 +12,8 @@ USE_VERTEX = os.getenv("USE_VERTEX", "true").lower() == "true"
 GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT", "")
 VERTEX_LOCATION = os.getenv("VERTEX_LOCATION", "us-central1")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")   # GA, stable for the demo
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")              # only if USE_VERTEX=false (AI Studio)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_TIMEOUT_MS = int(os.getenv("GEMINI_TIMEOUT_MS", "60000"))   # fail fast instead of hanging the request              # only if USE_VERTEX=false (AI Studio)
 
 # --- Storage ---
 GCS_BUCKET = os.getenv("GCS_BUCKET", "")   # empty => photos not uploaded (local placeholder URIs)

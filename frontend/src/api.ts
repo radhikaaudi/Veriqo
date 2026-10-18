@@ -1,6 +1,7 @@
+// Production: same origin (Cloud Run serves the app AND /api). Dev: the local backend.
 export const API_BASE =
-  (import.meta.env.VITE_API_BASE as string | undefined)?.replace(/\/$/, "") ||
-  "http://localhost:8080";
+  (import.meta.env.VITE_API_BASE as string | undefined)?.replace(/\/$/, "") ??
+  (import.meta.env.DEV ? "http://localhost:8080" : "");
 
 export type Severity = "none" | "minor" | "moderate" | "severe";
 
@@ -11,6 +12,7 @@ export interface DamageItem {
   type: string;
   severity: Severity;
   note: string;
+  photo_number: number;
 }
 
 export interface Finding {
@@ -49,10 +51,13 @@ export interface ConditionReport {
   red_flags: string[];
   inspect_professionally: string[];
   overall_confidence: number;
+  views_covered: string[];
 }
 
 export interface RcRecord {
   reg_number: string;
+  available: boolean;
+  note: string;
   make: string;
   model: string;
   reg_date: string;
@@ -78,6 +83,7 @@ export interface VerificationResult {
   share_id: string;
   created_at: string;
   reg_number: string;
+  claimed_make_model: string;
   condition: ConditionReport;
   rc: RcRecord;
   cross_checks: CrossChecks;
@@ -93,18 +99,42 @@ export interface VerificationResult {
   audit?: AuditEvent[];
 }
 
+/** Turn any failure into one sentence a buyer can act on (never a raw stack or JSON blob). */
+async function errorFrom(res: Response): Promise<Error> {
+  let detail = "";
+  try {
+    const body = await res.json();
+    detail = typeof body.detail === "string"
+      ? body.detail
+      : Array.isArray(body.detail) ? "Please add a registration number and at least one photo." : "";
+  } catch { /* non-JSON */ }
+  return new Error(detail || `Something went wrong (HTTP ${res.status}). Please try again.`);
+}
+
+async function call(input: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(input, init);
+  } catch {
+    throw new Error("Can't reach the Veriqo server. Check your connection and try again — nothing was submitted.");
+  }
+}
+
 export async function verify(
   regNumber: string,
-  photos: File[]
+  photos: File[],
+  claimedMakeModel = ""
 ): Promise<VerificationResult> {
   const form = new FormData();
   form.append("reg_number", regNumber);
+  form.append("claimed_make_model", claimedMakeModel);
   photos.forEach((p) => form.append("photos", p));
+  const res = await call(`${API_BASE}/api/verify`, { method: "POST", body: form });
+  if (!res.ok) throw await errorFrom(res);
+  return res.json();
+}
 
-  const res = await fetch(`${API_BASE}/api/verify`, { method: "POST", body: form });
-  if (!res.ok) {
-    const txt = await res.text().catch(() => "");
-    throw new Error(`Verification failed (${res.status}): ${txt}`);
-  }
+export async function getReport(shareId: string): Promise<VerificationResult> {
+  const res = await call(`${API_BASE}/api/report/${encodeURIComponent(shareId)}`);
+  if (!res.ok) throw res.status === 404 ? new Error("That report link wasn't found. It may be mistyped.") : await errorFrom(res);
   return res.json();
 }

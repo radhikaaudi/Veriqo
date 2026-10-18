@@ -5,7 +5,6 @@ The biggest risk in your Veriqo demo is not whether Gemini can describe a car ph
 Step 1 — Upload car photos
 Exterior, close-up damage, tyres and interior. Allow multiple images.
 
-
 Step 2 — Gemini visual inspection
 Identify visible issues, reference the relevant photo, explain uncertainty and recommend checks.
 

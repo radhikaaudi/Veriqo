@@ -11,6 +11,7 @@ sum of those points, decomposed into dimensions — never a mystery number.
 """
 from __future__ import annotations
 
+import re
 from datetime import date, datetime
 
 from models import (
@@ -28,6 +29,7 @@ _SEV_WEIGHT = {Severity.none: 0, Severity.minor: 4, Severity.moderate: 10, Sever
 # Fixed, published weights — stated so the score is explainable, not asserted.
 SCORING_RULES = [
     "Visible damage: minor +4, moderate +10, severe +22 (per item).",
+    "Visible-condition points are capped at 60: photos alone can make a car high-risk, but never max out the score.",
     "Visible rust: same severity weights.",
     "Uneven tyre wear: counted at half the severity weight.",
     "Active loan / hypothecation: +20.",
@@ -35,8 +37,19 @@ SCORING_RULES = [
     "Blacklisted in RC: +60.",
     "Pending challans: +3 each, capped at 5 challans.",
     "Low photo confidence (<0.5): +8 (uncertainty, not safety).",
+    "Registration record unavailable / not verified: +10 (uncertainty).",
+    "Seller's listed make/model differs from the registration record: +25.",
+    "Each missing core photo view (front, rear, left side, right side, tyres, interior): +3, capped at 12 (uncertainty).",
+    "Accident/service history and hidden mechanical condition are always listed as Not checked (0 points) — a clean-looking car is never an all-clear.",
     "Bands: 0–24 low · 25–54 medium · 55–100 high.",
 ]
+
+VISIBLE_CAP = 60
+CORE_VIEWS = ["front", "rear", "left_side", "right_side", "tyres", "interior"]
+_VIEW_LABEL = {"front": "front", "rear": "rear", "left_side": "left side", "right_side": "right side",
+               "tyres": "tyre close-ups", "interior": "interior"}
+# Gemini 'inspect professionally' items already covered by the fixed Not-checked findings.
+_COVERED_KEYWORDS = ("engine", "transmission", "gearbox", "history", "service record", "mechanical", "accident")
 
 # How each provenance rolls up into the three score dimensions.
 _DIMENSION = {
@@ -57,15 +70,38 @@ def _parse_date(s: str) -> date | None:
     return None
 
 
-def cross_check(condition: ConditionReport, rc: RcRecord, today: date | None = None) -> CrossChecks:
+def _tokens(s: str) -> set[str]:
+    return set(re.findall(r"[a-z0-9]+", (s or "").lower()))
+
+
+def make_model_matches(claimed: str, rc: RcRecord) -> bool | None:
+    """Compare the seller's listing with the record. None = nothing to compare.
+    Match rule (deliberately simple, stated): the record's model name (first word, e.g.
+    'Swift' from 'Swift VXI') must appear in what the seller claimed."""
+    claimed_t = _tokens(claimed)
+    model_t = re.findall(r"[a-z0-9]+", (rc.model or "").lower())
+    if not claimed_t or not rc.available or not model_t:
+        return None
+    return model_t[0] in claimed_t
+
+
+def cross_check(condition: ConditionReport, rc: RcRecord, today: date | None = None,
+                claimed_make_model: str = "") -> CrossChecks:
     today = today or date.today()
     cc = CrossChecks()
 
+    if not rc.available:
+        # Nothing was verified — every record-derived check stays UNKNOWN, never "false".
+        cc.notes.append("Registration record not available — insurance, loan, challans and blacklist NOT VERIFIED.")
+        return cc
+
     ins = _parse_date(rc.insurance_valid_until)
     cc.insurance_expired = (ins < today) if ins else None
-    cc.under_loan = bool(rc.financier.strip()) if rc else None
+    cc.under_loan = bool(rc.financier.strip())
     cc.blacklisted = bool(rc.blacklisted)
-    cc.make_model_match = None  # we don't collect a claimed model from the buyer in the MVP
+    cc.make_model_match = make_model_matches(claimed_make_model, rc)
+    if cc.make_model_match is False:
+        cc.notes.append(f"Listing says '{claimed_make_model}' but the record says '{rc.make} {rc.model}'.")
 
     if cc.insurance_expired:
         cc.notes.append(f"Insurance expired ({rc.insurance_valid_until}).")
@@ -78,20 +114,22 @@ def cross_check(condition: ConditionReport, rc: RcRecord, today: date | None = N
     return cc
 
 
-def build_findings(condition: ConditionReport, cc: CrossChecks, rc: RcRecord) -> list[Finding]:
+def build_findings(condition: ConditionReport, cc: CrossChecks, rc: RcRecord,
+                   claimed: str = "") -> list[Finding]:
     """Turn raw perception + record into evidence-linked, provenance-tagged findings."""
     conf = max(0.0, min(1.0, float(condition.overall_confidence)))
     findings: list[Finding] = []
 
     # ---- OBSERVED: visible condition from the photos (Gemini) ----
     for d in condition.damage:
+        photo = f"Photo {d.photo_number}" if d.photo_number > 0 else "Photo"
         findings.append(Finding(
             title=f"{d.type.replace('_', ' ').capitalize()} on {d.location}",
             detail=d.note,
             source=EvidenceSource.observed,
             severity=d.severity,
             confidence=conf,
-            evidence=f"Photo — {d.location}",
+            evidence=f"{photo} — {d.location}",
             next_action=_action_for_damage(d.type),
             points=_SEV_WEIGHT.get(d.severity, 4),
         ))
@@ -152,7 +190,29 @@ def build_findings(condition: ConditionReport, cc: CrossChecks, rc: RcRecord) ->
             next_action="Budget for fresh insurance; it must be renewed before road use.",
             points=12,
         ))
-    if rc.challans:
+    if cc.make_model_match is False:
+        findings.append(Finding(
+            title="Listed make/model does not match the registration record",
+            detail="What the seller's listing claims differs from the record for this registration number.",
+            source=EvidenceSource.inferred,   # rule comparing buyer-entered listing vs record field
+            severity=Severity.severe,
+            confidence=1.0,
+            evidence=f"Listing: '{claimed}' vs record: '{rc.make} {rc.model}'",
+            next_action="Ask the seller to explain; match the chassis number on the car to the RC in person.",
+            points=25,
+        ))
+    elif cc.make_model_match is True:
+        findings.append(Finding(
+            title="Listed make/model matches the registration record",
+            detail="The model named in the listing agrees with the record.",
+            source=EvidenceSource.record,
+            severity=Severity.none,
+            confidence=1.0,
+            evidence=f"Listing: '{claimed}' vs record: '{rc.make} {rc.model}'",
+            next_action="Still confirm the chassis/engine number on the car matches the RC.",
+            points=0,
+        ))
+    if rc.available and rc.challans:
         capped = min(rc.challans, 5)
         findings.append(Finding(
             title=f"{rc.challans} pending challan(s)",
@@ -177,19 +237,71 @@ def build_findings(condition: ConditionReport, cc: CrossChecks, rc: RcRecord) ->
             next_action="Request more, clearer photos or an in-person check.",
             points=8,
         ))
-    if cc.make_model_match is None:
+    if not rc.available:
+        findings.append(Finding(
+            title="Registration record not available — not verified",
+            detail="No registration data could be retrieved, so insurance, loan, challans and blacklist status are unknown.",
+            source=EvidenceSource.not_checked,
+            severity=Severity.moderate,
+            confidence=1.0,
+            evidence=rc.note or "Registration lookup returned no record",
+            next_action="Ask the seller for the RC, insurance policy and any loan NOC; verify them on Parivahan before paying.",
+            points=10,
+        ))
+    elif cc.make_model_match is None:
         findings.append(Finding(
             title="Make/model not cross-checked",
-            detail="The buyer did not supply a claimed make/model, so it was not matched against the RC.",
+            detail="No make/model from the seller's listing was entered, so it was not compared with the record.",
             source=EvidenceSource.not_checked,
             severity=Severity.none,
             confidence=1.0,
-            evidence="No buyer-claimed make/model provided",
+            evidence="No listed make/model provided",
             next_action="Confirm the car's make/model matches the RC in person.",
             points=0,
         ))
-    # Everything Gemini said needs a professional eye — surfaced, never scored away.
+
+    # Photo coverage: which core views were never shown? (only when Gemini identified any view)
+    covered = {v.value if hasattr(v, "value") else str(v) for v in condition.views_covered}
+    if covered:
+        missing = [v for v in CORE_VIEWS if v not in covered]
+        if missing:
+            labels = ", ".join(_VIEW_LABEL[v] for v in missing)
+            findings.append(Finding(
+                title=f"Missing photo coverage: {labels}",
+                detail="These parts of the car were not shown, so problems there could not be observed.",
+                source=EvidenceSource.not_checked,
+                severity=Severity.minor,
+                confidence=1.0,
+                evidence=f"Views identified in photos: {', '.join(sorted(covered))}",
+                next_action=f"Ask the seller for clear photos of: {labels}.",
+                points=min(12, 3 * len(missing)),
+            ))
+
+    # Never an all-clear: photos cannot establish these, so they are always listed.
+    findings.append(Finding(
+        title="Accident and service history — not checked",
+        detail="No connected history source; a photo cannot prove a car has never been in an accident.",
+        source=EvidenceSource.not_checked,
+        severity=Severity.none,
+        confidence=1.0,
+        evidence="No history data source connected",
+        next_action="Ask for service records and insurance claim history; consider a paid history report.",
+        points=0,
+    ))
+    findings.append(Finding(
+        title="Hidden mechanical condition — not checked",
+        detail="Engine, gearbox, suspension, brakes and underbody cannot be judged from photos.",
+        source=EvidenceSource.not_checked,
+        severity=Severity.none,
+        confidence=1.0,
+        evidence="Not visible in photos",
+        next_action="Get an independent mechanic's inspection and a test drive before paying.",
+        points=0,
+    ))
+    # Everything else Gemini said needs a professional eye — surfaced, never scored away.
     for item in condition.inspect_professionally:
+        if any(k in item.lower() for k in _COVERED_KEYWORDS):
+            continue
         findings.append(Finding(
             title=item,
             detail="Not verifiable from photos — out of scope for this triage.",
@@ -208,6 +320,7 @@ def score(findings: list[Finding]) -> ScoreBreakdown:
     dims = {"visible_condition": 0, "record": 0, "uncertainty": 0}
     for f in findings:
         dims[_DIMENSION[f.source]] += f.points
+    dims["visible_condition"] = min(dims["visible_condition"], VISIBLE_CAP)
     total = max(0, min(100, sum(dims.values())))
     return ScoreBreakdown(total=total, rules=list(SCORING_RULES), **dims)
 
@@ -223,9 +336,9 @@ def top_red_flags(findings: list[Finding], limit: int = 6) -> list[str]:
     return [f.title for f in scored[:limit]]
 
 
-def assess(condition: ConditionReport, cc: CrossChecks, rc: RcRecord):
+def assess(condition: ConditionReport, cc: CrossChecks, rc: RcRecord, claimed: str = ""):
     """One call → everything the API needs: findings, breakdown, score, band, red flags."""
-    findings = build_findings(condition, cc, rc)
+    findings = build_findings(condition, cc, rc, claimed)
     breakdown = score(findings)
     return findings, breakdown, breakdown.total, band_for(breakdown.total), top_red_flags(findings)
 

@@ -48,8 +48,8 @@ def run(reg: str):
 
 
 if __name__ == "__main__":
-    s1, b1 = run("MH01AB1234")   # ends even -> clean-ish
-    s2, b2 = run("MH01AB1237")   # ends odd  -> issues (expired insurance + loan + challans)
+    s1, b1 = run("ZZ01TC0001")   # synthetic fixture: clean papers
+    s2, b2 = run("ZZ01TC0002")   # synthetic fixture: expired insurance + loan + challans
     assert s2 > s1, "risky reg should score higher than clean reg"
     assert b2 in ("medium", "high"), "risky reg should not be low risk"
     print("\nALL SMOKE CHECKS PASSED")

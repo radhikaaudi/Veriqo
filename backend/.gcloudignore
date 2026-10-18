@@ -1,0 +1,12 @@
+# Never upload local secrets, environments, caches or test-only files to Cloud Build.
+.gcloudignore
+.env
+.env.*
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
+*.log
+.DS_Store

@@ -37,6 +37,38 @@
       "condition": {"overall_summary": "blurry", "damage": [{"location": "bumper", "type": "scratch", "severity": "minor"}], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.3},
       "rc": {"reg_number": "KA01AA0006", "insurance_valid_until": "2027-01-01", "financier": "", "challans": 0, "blacklisted": false},
       "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "low", "sources_present": ["observed", "not_checked"], "uncertainty_gt": 0}
+    },
+    {
+      "name": "clean-car-is-never-an-all-clear",
+      "condition": {"overall_summary": "clean", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.9, "views_covered": ["front", "rear", "left_side", "right_side", "tyres", "interior"]},
+      "rc": {"reg_number": "ZZ01TC0001", "make": "Honda", "model": "City", "insurance_valid_until": "2027-03-31", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "low", "sources_present": ["not_checked"], "titles_contain": ["accident and service history", "hidden mechanical condition"]}
+    },
+    {
+      "name": "registration-unavailable-is-not-verified",
+      "condition": {"overall_summary": "ok", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.8},
+      "rc": {"reg_number": "XX99ZZ9999", "available": false},
+      "expect": {"insurance_expired": null, "under_loan": null, "blacklisted": null, "band": "low", "sources_present": ["not_checked"], "sources_absent": ["record", "inferred"], "uncertainty_gt": 0, "titles_contain": ["not available"]}
+    },
+    {
+      "name": "listing-make-model-mismatch",
+      "claimed_make_model": "Honda City",
+      "condition": {"overall_summary": "ok", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.8},
+      "rc": {"reg_number": "ZZ01TC0004", "make": "Maruti Suzuki", "model": "Swift VXI", "insurance_valid_until": "2027-02-28", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "medium", "make_model_match": false, "sources_present": ["inferred"]}
+    },
+    {
+      "name": "listing-make-model-match",
+      "claimed_make_model": "Maruti Swift",
+      "condition": {"overall_summary": "ok", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.8},
+      "rc": {"reg_number": "ZZ01TC0004", "make": "Maruti Suzuki", "model": "Swift VXI", "insurance_valid_until": "2027-02-28", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "low", "make_model_match": true, "sources_present": ["record"]}
+    },
+    {
+      "name": "single-front-photo-flags-missing-coverage",
+      "condition": {"overall_summary": "front only", "damage": [], "rust_level": "none", "tyre_wear": "none", "overall_confidence": 0.7, "views_covered": ["front"]},
+      "rc": {"reg_number": "ZZ01TC0001", "make": "Honda", "model": "City", "insurance_valid_until": "2027-03-31", "financier": "", "challans": 0, "blacklisted": false},
+      "expect": {"insurance_expired": false, "under_loan": false, "blacklisted": false, "band": "low", "uncertainty_gt": 0, "titles_contain": ["missing photo coverage"]}
     }
   ]
 }

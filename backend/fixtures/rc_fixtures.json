@@ -1,0 +1,29 @@
+{
+  "_warning": "SYNTHETIC TEST DATA — NOT REAL RTO / VAHAN RECORDS. The 'ZZ' state code does not exist, so these plates cannot belong to a real vehicle. Used only when VAHAN_MODE=mock. Any registration number not listed here returns 'record not available' (NOT VERIFIED) — the app never invents a record for an arbitrary plate.",
+  "records": {
+    "ZZ01TC0001": {
+      "_scenario": "clean papers: insurance valid, no loan, no challans",
+      "make": "Volkswagen", "model": "Vento", "reg_date": "2019-06-12", "fuel": "Petrol",
+      "insurance_valid_until": "2027-03-31", "financier": "", "challans": 0, "blacklisted": false,
+      "rto": "TEST RTO (synthetic)"
+    },
+    "ZZ01TC0002": {
+      "_scenario": "paperwork problems: insurance expired, active loan, 3 challans",
+      "make": "Hyundai", "model": "Verna", "reg_date": "2017-02-20", "fuel": "Petrol",
+      "insurance_valid_until": "2024-11-30", "financier": "Test Finance Ltd (synthetic)", "challans": 3, "blacklisted": false,
+      "rto": "TEST RTO (synthetic)"
+    },
+    "ZZ01TC0003": {
+      "_scenario": "blacklisted record: must be high risk",
+      "make": "Toyota", "model": "Corolla", "reg_date": "2016-09-01", "fuel": "Petrol",
+      "insurance_valid_until": "2027-01-15", "financier": "", "challans": 0, "blacklisted": true,
+      "rto": "TEST RTO (synthetic)"
+    },
+    "ZZ01TC0004": {
+      "_scenario": "make/model mismatch fixture: record says Maruti Suzuki Swift; test input claims a different car (e.g. 'Honda City')",
+      "make": "Maruti Suzuki", "model": "Swift VXI", "reg_date": "2018-03-14", "fuel": "Petrol",
+      "insurance_valid_until": "2027-02-28", "financier": "", "challans": 0, "blacklisted": false,
+      "rto": "TEST RTO (synthetic)"
+    }
+  }
+}

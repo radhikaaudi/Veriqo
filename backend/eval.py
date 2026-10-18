@@ -34,12 +34,16 @@ def _condition(d: dict) -> ConditionReport:
         rust_level=Severity(d.get("rust_level", "none")),
         tyre_wear=Severity(d.get("tyre_wear", "none")),
         overall_confidence=float(d.get("overall_confidence", 0.6)),
+        views_covered=d.get("views_covered", []),
     )
 
 
 def _rc(d: dict) -> RcRecord:
     return RcRecord(
         reg_number=d.get("reg_number", ""),
+        available=bool(d.get("available", True)),
+        make=d.get("make", ""),
+        model=d.get("model", ""),
         insurance_valid_until=d.get("insurance_valid_until", ""),
         financier=d.get("financier", ""),
         challans=int(d.get("challans", 0)),
@@ -66,8 +70,9 @@ def main() -> int:
         condition, rc, exp = _condition(c["condition"]), _rc(c["rc"]), c["expect"]
 
         t0 = time.perf_counter()
-        cc = scoring.cross_check(condition, rc, today=today)
-        findings, breakdown, _score, band, _flags = scoring.assess(condition, cc, rc)
+        claimed = c.get("claimed_make_model", "")
+        cc = scoring.cross_check(condition, rc, today=today, claimed_make_model=claimed)
+        findings, breakdown, _score, band, _flags = scoring.assess(condition, cc, rc, claimed)
         latencies.append((time.perf_counter() - t0) * 1000)
 
         checks: list[tuple[str, bool]] = [
@@ -79,6 +84,13 @@ def main() -> int:
         present = {f.source.value for f in findings}
         for s in exp.get("sources_present", []):
             checks.append((f"source:{s}", s in present))
+        for s in exp.get("sources_absent", []):
+            checks.append((f"no-source:{s}", s not in present))
+        if "make_model_match" in exp:
+            checks.append(("make_model_match", cc.make_model_match == exp["make_model_match"]))
+        titles = " | ".join(f.title.lower() for f in findings)
+        for t in exp.get("titles_contain", []):
+            checks.append((f"title:{t}", t.lower() in titles))
         if "uncertainty_gt" in exp:
             checks.append(("uncertainty>0", breakdown.uncertainty > exp["uncertainty_gt"]))
 

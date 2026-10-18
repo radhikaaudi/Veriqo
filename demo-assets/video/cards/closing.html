@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Veriqo — architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;font-family:"Exo 2",sans-serif;background:#f3f0ee;color:#2a282a}
+.w{height:100%;box-sizing:border-box;padding:48px 72px;display:flex;flex-direction:column}
+h2{margin:0 0 6px;font-size:34px;letter-spacing:-.01em}
+.sub{color:#6e7075;font-size:17px;margin-bottom:30px}
+.row{display:flex;align-items:center;gap:14px}
+.box{background:#fff;border:1px solid #d9d7d6;border-radius:14px;padding:14px 18px;box-shadow:0 1px 2px rgba(42,30,36,.05),0 10px 24px rgba(42,30,36,.07);min-width:170px}
+.box b{display:block;font-size:17px}.box span{font-size:13.5px;color:#6e7075}
+.p{border-color:#734B5E}.sim{border-style:dashed}
+.arr{color:#8A8D91;font-size:22px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.stats{margin-top:34px;display:flex;gap:16px}
+.stat{flex:1;background:#fff;border:1px solid #d9d7d6;border-radius:14px;padding:16px 18px}
+.stat .n{font-size:30px;font-weight:700;color:#734B5E}.stat .l{font-size:14px;color:#6e7075}
+.foot{margin-top:auto;font-size:15px;color:#6e7075}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:#fbefe0;color:#7a4e07;border:1px solid #efd7aa;margin-top:4px}
+</style></head><body><div class="w">
+<h2>What is actually running</h2>
+<div class="sub">Every box below is live in project veriqo-512010 — except the registration lookup, which is simulated.</div>
+<div class="row">
+  <div class="box"><b>Buyer's browser</b><span>React app</span></div><div class="arr">→</div>
+  <div class="box p"><b>Cloud Run</b><span>serves the web app + FastAPI<br>deterministic scoring rules</span></div><div class="arr">→</div>
+  <div class="stack">
+    <div class="box"><b>Gemini 2.5 Flash · Vertex AI</b><span>structured photo findings</span></div>
+    <div class="box"><b>Cloud Firestore</b><span>reports + append-only audit trail</span></div>
+    <div class="box"><b>Cloud Storage</b><span>uploaded photos · private · 30-day expiry</span></div>
+    <div class="box sim"><b>Registration (VAHAN) lookup</b><span>synthetic test fixtures</span><br><span class="tag">SIMULATED — NOT GOVERNMENT VERIFIED</span></div>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="n">21</div><div class="l">automated API tests passing</div></div>
+  <div class="stat"><div class="n">15/15</div><div class="l">browser scenarios passing on this deployment</div></div>
+  <div class="stat"><div class="n">67/67</div><div class="l">scoring-rule checks passing</div></div>
+</div>
+<div class="foot">Live: veriqo-api-920194228751.us-central1.run.app · Test photos: Wikimedia Commons (CC licences, see repo) · Full results incl. model errors found: docs/05-TEST-RESULTS.md</div>
+</div></body></html>
