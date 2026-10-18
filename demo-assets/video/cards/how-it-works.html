@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><title>How Veriqo works</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;width:100%;height:100%;font-family:"Exo 2",sans-serif;background:#f3f0ee;color:#2a282a;overflow:hidden}
+.w{box-sizing:border-box;height:100%;padding:44px 64px;display:flex;flex-direction:column}
+h2{margin:0;font-size:34px;letter-spacing:-.01em}.sub{color:#6e7075;font-size:17px;margin:6px 0 28px}
+.flow{display:flex;align-items:stretch;gap:10px}
+.st{flex:1;background:#fff;border:1.5px solid #d9d7d6;border-radius:14px;padding:14px 14px 12px;box-shadow:0 1px 2px rgba(42,30,36,.05),0 10px 24px rgba(42,30,36,.07)}
+.st .n{font-size:12px;font-weight:700;color:#734B5E;letter-spacing:.04em}
+.st b{display:block;font-size:17px;margin:4px 0 6px}.st span{font-size:13.5px;color:#5f6266;line-height:1.4}
+.ai{border-color:#734B5E}.rule{border-color:#4a4c4b}.sim{border-style:dashed;border-color:#a9700c}
+.ar{align-self:center;color:#8A8D91;font-size:22px}
+.labels{margin-top:30px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.lb{border-radius:12px;padding:12px 14px;background:#fff;border:1px solid #d9d7d6}
+.lb i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.lb b{font-size:16px}.lb p{margin:4px 0 0;font-size:13.5px;color:#5f6266;line-height:1.4}
+.foot{margin-top:auto;font-size:15px;color:#6e7075}
+</style></head><body><div class="w">
+<h2>How Veriqo works</h2>
+<div class="sub">Gemini perceives. Fixed rules decide. Every conclusion says where it came from.</div>
+<div class="flow">
+  <div class="st"><div class="n">1 · INPUT</div><b>Photos + plate + listing</b><span>Up to 8 photos, each numbered. Non-images and files over 12 MB are rejected.</span></div><div class="ar">→</div>
+  <div class="st ai"><div class="n">2 · GEMINI 2.5 FLASH</div><b>Structured findings</b><span>Vertex AI returns typed JSON: defect, location, severity rubric, photo number, views seen, confidence.</span></div><div class="ar">→</div>
+  <div class="st sim"><div class="n">3 · REGISTRATION</div><b>Record lookup</b><span>Simulated in this demo with synthetic test plates; unknown plates are “not verified”.</span></div><div class="ar">→</div>
+  <div class="st rule"><div class="n">4 · RULES ENGINE</div><b>Deterministic score</b><span>Cross-checks, missing angles, listing mismatch. Score = sum of published points.</span></div><div class="ar">→</div>
+  <div class="st"><div class="n">5 · REPORT</div><b>Labelled + saved</b><span>Prioritised checklist. Report and audit trail in Firestore, photos in Cloud Storage.</span></div>
+</div>
+<div class="labels">
+  <div class="lb"><i style="background:#734B5E"></i><b>Observed</b><p>Seen in the buyer's photos by Gemini.</p></div>
+  <div class="lb"><i style="background:#3f6ea3"></i><b>Record</b><p>Read from registration data (simulated here).</p></div>
+  <div class="lb"><i style="background:#4a4c4b"></i><b>Inferred</b><p>A fixed rule applied to the record.</p></div>
+  <div class="lb"><i style="background:#74777b"></i><b>Not checked</b><p>What photos can't prove — always listed.</p></div>
+</div>
+<div class="foot">Runs on Cloud Run · Gemini 2.5 Flash (Vertex AI) · Cloud Firestore · Cloud Storage</div>
+</div></body></html>

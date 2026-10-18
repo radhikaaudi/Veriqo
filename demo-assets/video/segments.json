@@ -2,71 +2,85 @@
   {
     "id": "intro",
     "start": 0,
-    "dur": 11.416871,
-    "say": "Buying a used car means trusting photos and paperwork you can't verify. Veriqo shows a buyer what the photos reveal, what the record says, what is still uncertain, and what to inspect before paying.",
-    "cap": "The problem: buyers pay for cars they can't fully verify."
+    "end": 12.056,
+    "voice": 11.451701,
+    "say": "Buying a used car means trusting photos and paperwork you can't verify. Veriqo shows the buyer what the photos reveal, what the record says, what is still uncertain, and what to inspect before paying."
+  },
+  {
+    "id": "how",
+    "start": 12.057,
+    "end": 35.803,
+    "voice": 23.146213,
+    "say": "Here's how it works. The buyer adds photos, the registration number and the seller's listing. Gemini 2.5 Flash on Vertex AI turns the photos into structured findings. A registration lookup adds record facts, which are simulated in this demo. Then a deterministic rules engine scores everything, and the report labels each finding as observed, record, inferred, or not checked."
   },
   {
     "id": "upload",
-    "start": 11.919,
-    "dur": 12.281723,
-    "say": "This is the live app on Google Cloud Run. We enter a test registration number, the make and model from the seller's listing, and five test photos. They are real, openly licensed images, not a customer's car.",
-    "cap": "Live app on Cloud Run · synthetic test plate · 5 openly licensed test photos"
+    "start": 35.803,
+    "end": 48.335,
+    "voice": 11.930068,
+    "say": "Now the live app on Cloud Run. I enter a synthetic test plate and the make and model from the listing, then upload five openly licensed test photos. Each photo is numbered, so every finding can point back to it."
   },
   {
     "id": "analyze",
-    "start": 24.702,
-    "dur": 11.580544,
-    "say": "Gemini 2.5 Flash on Vertex AI reads every photo and returns structured findings, each linked to the photo it came from. Then the registration lookup runs. In this demo it is simulated.",
-    "cap": "Real analysis in progress: Gemini 2.5 Flash on Vertex AI → simulated registration lookup → rules"
+    "start": 48.335,
+    "end": 68.563,
+    "voice": 19.626259,
+    "say": "Gemini is analysing the photos now, and this wait is real, not edited. Each photo is sent with a strict response schema: the defect, where it is, its severity on a fixed rubric, which photo shows it, which views of the car are covered, and a confidence score. The temperature is zero, so the same photos give the same answer."
   },
   {
     "id": "score",
-    "start": 51.273,
-    "dur": 7.314739,
-    "say": "The score is not a guess. It is the sum of fixed, published rules, and the breakdown shows exactly where every point came from.",
-    "cap": "Score = sum of published rules · breakdown shows where every point came from"
+    "start": 68.564,
+    "end": 79.517,
+    "voice": 10.352018,
+    "say": "Here is the result. The score is not a guess. It is the sum of published points for each finding, and this bar shows how much came from the visible condition, the record, and uncertainty."
   },
   {
     "id": "labels",
-    "start": 72.683,
-    "dur": 18.073379,
-    "say": "Every finding carries one of four labels. Observed means seen in the photos, like the worn tyre and the torn seat. Record means read from the registration data. Inferred means a rule applied to that data, like the expired insurance. And not checked is what photos can never prove, such as accident history or the engine.",
-    "cap": "Four labels: Observed · Record · Inferred · Not checked"
+    "start": 79.518,
+    "end": 102.267,
+    "voice": 22.149524,
+    "say": "Each finding carries one of four labels. Observed means Gemini saw it in a photo, shown right beside it, like the worn tyre and the torn seat. Record means it was read from the registration data, such as the active loan. Inferred means a rule was applied to that data, like the expired insurance. And not checked lists what photos can never prove, such as accident history or the engine."
   },
   {
     "id": "simulated",
-    "start": 91.276,
-    "dur": 7.683991,
-    "say": "This registration record is synthetic test data, so it is labelled simulated, not government verified, wherever it appears.",
-    "cap": "Synthetic record → labelled SIMULATED — NOT GOVERNMENT VERIFIED"
+    "start": 102.267,
+    "end": 110.639,
+    "voice": 7.771338,
+    "say": "Because this registration record is synthetic test data, it is labelled simulated, not government verified, wherever it appears."
   },
   {
     "id": "checklist",
-    "start": 99.462,
-    "dur": 4.970522,
-    "say": "Finally, a prioritised checklist tells the buyer exactly what to do before paying.",
-    "cap": "Prioritised buyer checklist"
+    "start": 110.639,
+    "end": 115.106,
+    "voice": 3.866576,
+    "say": "The buyer then gets a prioritised checklist of what to do before paying."
   },
   {
     "id": "persist",
-    "start": 104.933,
-    "dur": 7.303129,
-    "say": "The report is saved in Firestore, with the photos in a private Cloud Storage bucket. Reloading the link brings back the same report.",
-    "cap": "Saved in Firestore · photos in private Cloud Storage · reload restores the report"
+    "start": 115.107,
+    "end": 124.938,
+    "voice": 9.230385,
+    "say": "The report is saved in Firestore, with the photos in a private Cloud Storage bucket. Reloading the link restores it, and the audit trail shows every step that produced it."
   },
   {
     "id": "failure",
-    "start": 112.737,
-    "dur": 12.183356,
-    "say": "Now a failure case: a blurry photo, and a plate with no record. Veriqo lowers its confidence, makes no confident claims, and marks the registration as not verified, instead of inventing data.",
-    "cap": "Failure case: blurry photo + plate with no record"
+    "start": 124.938,
+    "end": 132.114,
+    "voice": 6.575737,
+    "say": "Now a failure case: a blurry photo, and a plate that has no record. Watch what Veriqo does with weak evidence."
+  },
+  {
+    "id": "failure2",
+    "start": 132.114,
+    "end": 140.468,
+    "voice": 7.752154,
+    "say": "It lowers its confidence, makes no claims it cannot see, and marks the registration as not verified, instead of inventing data."
   },
   {
     "id": "close",
-    "start": 125.424,
-    "dur": 12.871383,
-    "say": "Under the hood: Cloud Run, Gemini on Vertex AI, Firestore and Cloud Storage, with automated API tests and a browser test matrix run against this deployment. Veriqo. Know what to check before you buy.",
-    "cap": "Cloud Run · Gemini 2.5 Flash (Vertex AI) · Firestore · Cloud Storage"
+    "start": 140.468,
+    "end": 159.478,
+    "voice": 18.409342,
+    "say": "Under the hood: Cloud Run, Gemini 2.5 Flash on Vertex AI, Firestore and Cloud Storage. We tested it with automated API tests, scoring rule checks, and browser tests on this live deployment, and fixed the model errors those tests found. Veriqo. Know what to check before you buy."
   }
 ]

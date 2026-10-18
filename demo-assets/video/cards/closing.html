@@ -1,7 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Veriqo — architecture</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;height:100%;font-family:"Exo 2",sans-serif;background:#f3f0ee;color:#2a282a}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Exo 2",sans-serif;background:#f3f0ee;color:#2a282a}
 .w{height:100%;box-sizing:border-box;padding:48px 72px;display:flex;flex-direction:column}
 h2{margin:0 0 6px;font-size:34px;letter-spacing:-.01em}
 .sub{color:#6e7075;font-size:17px;margin-bottom:30px}
@@ -34,5 +34,5 @@ h2{margin:0 0 6px;font-size:34px;letter-spacing:-.01em}
   <div class="stat"><div class="n">15/15</div><div class="l">browser scenarios passing on this deployment</div></div>
   <div class="stat"><div class="n">67/67</div><div class="l">scoring-rule checks passing</div></div>
 </div>
-<div class="foot">Live: veriqo-api-920194228751.us-central1.run.app · Test photos: Wikimedia Commons (CC licences, see repo) · Full results incl. model errors found: docs/05-TEST-RESULTS.md</div>
+<div class="foot">Model errors found in testing (severity inflation, over-claimed views) were fixed and re-tested — see docs/05b-MODEL-REVIEW.md.<br>Live: veriqo-api-920194228751.us-central1.run.app · Test photos: Wikimedia Commons (CC licences, see repo) · Full results incl. model errors found: docs/05-TEST-RESULTS.md</div>
 </div></body></html>

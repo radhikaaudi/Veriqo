@@ -1,0 +1,175 @@
+1
+00:00:00,000 --> 00:00:04,106
+Buying a used car means trusting photos and paperwork you can't verify.
+
+2
+00:00:04,106 --> 00:00:08,849
+Veriqo shows the buyer what the photos reveal, what the record says, what is still
+
+3
+00:00:08,849 --> 00:00:11,452
+uncertain, and what to inspect before paying.
+
+4
+00:00:12,057 --> 00:00:13,305
+Here's how it works.
+
+5
+00:00:13,305 --> 00:00:17,797
+The buyer adds photos, the registration number and the seller's listing.
+
+6
+00:00:17,797 --> 00:00:22,289
+Gemini 2.5 Flash on Vertex AI turns the photos into structured findings.
+
+7
+00:00:22,289 --> 00:00:26,906
+A registration lookup adds record facts, which are simulated in this demo.
+
+8
+00:00:26,906 --> 00:00:32,333
+Then a deterministic rules engine scores everything, and the report labels each finding
+
+9
+00:00:32,333 --> 00:00:35,203
+as observed, record, inferred, or not checked.
+
+10
+00:00:35,803 --> 00:00:37,524
+Now the live app on Cloud Run.
+
+11
+00:00:37,524 --> 00:00:42,571
+I enter a synthetic test plate and the make and model from the listing, then upload five
+
+12
+00:00:42,571 --> 00:00:44,177
+openly licensed test photos.
+
+13
+00:00:44,177 --> 00:00:47,733
+Each photo is numbered, so every finding can point back to it.
+
+14
+00:00:48,335 --> 00:00:52,615
+Gemini is analysing the photos now, and this wait is real, not edited.
+
+15
+00:00:52,615 --> 00:00:55,611
+Each photo is sent with a strict response schema:
+
+16
+00:00:55,611 --> 00:01:00,747
+the defect, where it is, its severity on a fixed rubric, which photo shows it, which
+
+17
+00:01:00,747 --> 00:01:03,987
+views of the car are covered, and a confidence score.
+
+18
+00:01:03,987 --> 00:01:07,961
+The temperature is zero, so the same photos give the same answer.
+
+19
+00:01:08,564 --> 00:01:09,633
+Here is the result.
+
+20
+00:01:09,633 --> 00:01:11,039
+The score is not a guess.
+
+21
+00:01:11,039 --> 00:01:15,765
+It is the sum of published points for each finding, and this bar shows how much came
+
+22
+00:01:15,765 --> 00:01:18,916
+from the visible condition, the record, and uncertainty.
+
+23
+00:01:19,518 --> 00:01:21,837
+Each finding carries one of four labels.
+
+24
+00:01:21,837 --> 00:01:26,824
+Observed means Gemini saw it in a photo, shown right beside it, like the worn tyre and
+
+25
+00:01:26,824 --> 00:01:27,636
+the torn seat.
+
+26
+00:01:27,636 --> 00:01:32,100
+Record means it was read from the registration data, such as the active loan.
+
+27
+00:01:32,100 --> 00:01:36,449
+Inferred means a rule was applied to that data, like the expired insurance.
+
+28
+00:01:36,449 --> 00:01:41,668
+And not checked lists what photos can never prove, such as accident history or the engine.
+
+29
+00:01:42,267 --> 00:01:47,529
+Because this registration record is synthetic test data, it is labelled simulated, not
+
+30
+00:01:47,529 --> 00:01:50,038
+government verified, wherever it appears.
+
+31
+00:01:50,639 --> 00:01:54,506
+The buyer then gets a prioritised checklist of what to do before paying.
+
+32
+00:01:55,107 --> 00:01:59,668
+The report is saved in Firestore, with the photos in a private Cloud Storage bucket.
+
+33
+00:01:59,668 --> 00:02:04,337
+Reloading the link restores it, and the audit trail shows every step that produced it.
+
+34
+00:02:04,938 --> 00:02:06,095
+Now a failure case:
+
+35
+00:02:06,095 --> 00:02:08,957
+a blurry photo, and a plate that has no record.
+
+36
+00:02:08,957 --> 00:02:11,514
+Watch what Veriqo does with weak evidence.
+
+37
+00:02:12,114 --> 00:02:17,405
+It lowers its confidence, makes no claims it cannot see, and marks the registration as
+
+38
+00:02:17,405 --> 00:02:19,866
+not verified, instead of inventing data.
+
+39
+00:02:20,468 --> 00:02:21,480
+Under the hood:
+
+40
+00:02:21,480 --> 00:02:26,200
+Cloud Run, Gemini 2.5 Flash on Vertex AI, Firestore and Cloud Storage.
+
+41
+00:02:26,200 --> 00:02:31,932
+We tested it with automated API tests, scoring rule checks, and browser tests on this
+
+42
+00:02:31,932 --> 00:02:36,113
+live deployment, and fixed the model errors those tests found.
+
+43
+00:02:36,113 --> 00:02:36,585
+Veriqo.
+
+44
+00:02:36,585 --> 00:02:38,877
+Know what to check before you buy.
