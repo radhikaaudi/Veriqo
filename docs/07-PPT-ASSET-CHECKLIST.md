@@ -22,7 +22,7 @@ that aren't running.** The reference mockups supplied during planning were NOT u
 | 10 | Snapshots | **Real screens** (cropped to the app column): `04-report-summary.png`, `06-checklist.png`, `07-rc-not-verified.png` | Live app | ✅ |
 | 11 | Benchmarking | Measured results only: 21/21 API, 67/67 rule checks, 15/15 browser (first run 14/15), 9.8 s median; model review before/after | `backend/tests/`, `backend/eval.py`, `tests/e2e/matrix.js`, `docs/05b-MODEL-REVIEW.md` | ✅ |
 | 12 | Future | Text | — | ✅ |
-| 13 | Links | GitHub, demo video (https://youtu.be/B015EyHjXNM) and live URL — all clickable | — | ✅ |
+| 13 | Links | GitHub, demo video (https://youtu.be/zZbVIwDWArE) and live URL — all clickable | — | ✅ |
 | 14 | Thank you | Template art | Official template PDF | ✅ |
 
 ## Other screenshots available (not in the deck)

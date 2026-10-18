@@ -20,7 +20,7 @@ OUT = ROOT / "docs/Veriqo_AI_Builder_Cup_Deck.pptx"
 
 LIVE_URL = "https://veriqo-api-920194228751.us-central1.run.app"
 REPO_URL = "https://github.com/radhikaaudi/Veriqo"
-VIDEO_URL = "https://youtu.be/B015EyHjXNM"
+VIDEO_URL = "https://youtu.be/zZbVIwDWArE"
 
 FONT = "Arial"
 BLACK, WHITE = RGBColor(0, 0, 0), RGBColor(0xFF, 0xFF, 0xFF)
