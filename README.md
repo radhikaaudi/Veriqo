@@ -4,8 +4,8 @@
 AI Builder Cup 2026 · Theme: Retail & Commerce · Built on **Firebase · Firestore · Cloud Run · Gemini**.
 
 ### 🎥 Demo videos
-- **English version:** https://youtu.be/B015EyHjXNM
 - **Original version:** https://youtu.be/zZbVIwDWArE
+- **English version:** https://youtu.be/B015EyHjXNM
 
 **Live app:** https://veriqo-api-920194228751.us-central1.run.app
 
