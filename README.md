@@ -1,4 +1,4 @@
-# Veriqo 🚗✅
+# Veriqo
 
 **Verify any used car in 60 seconds — before you pay anyone.**
 AI Builder Cup 2026 · Theme: Retail & Commerce · Built on **Firebase · Firestore · Cloud Run · Gemini**.
